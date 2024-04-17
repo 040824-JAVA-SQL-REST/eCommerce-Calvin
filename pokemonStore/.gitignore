@@ -26,6 +26,15 @@
 *.sql
 *.sqlite
 
+
+# MAVEN TARGET FOLDER #
+#######################
+
+.classpath
+.project
+.settings/
+target/
+
 # OS generated files #
 ######################
 .DS_Store
