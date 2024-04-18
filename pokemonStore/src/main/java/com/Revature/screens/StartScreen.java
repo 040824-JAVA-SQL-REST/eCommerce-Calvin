@@ -15,7 +15,6 @@ public class StartScreen extends BaseScreen{
 
     @Override
     public void startInterface() {
-        // TODO Auto-generated method stub
         while(true) {
             clearScreen();
             System.out.println("Welcome to the Pokemon Store!");

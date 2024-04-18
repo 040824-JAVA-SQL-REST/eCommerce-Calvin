@@ -26,10 +26,8 @@
 *.sql
 *.sqlite
 
-
 # MAVEN TARGET FOLDER #
 #######################
-
 .classpath
 .project
 .settings/
