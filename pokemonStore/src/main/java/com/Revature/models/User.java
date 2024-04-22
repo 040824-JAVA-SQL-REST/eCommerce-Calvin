@@ -3,7 +3,7 @@ package com.Revature.models;
 import java.util.UUID;
 
 public class User {
-    private String user_id;
+    private String id;
     private String username;
     private String password;
     private String email;
@@ -13,8 +13,16 @@ public class User {
 
     }
 
+    public User (String[] data) {
+        this.id = data[0];
+        this.username = data[1];
+        this.password = data[2];
+        this.email = data[3];
+        this.role_id = data[4];
+    }
+
     public User(String username, String password, String email) {
-        this.user_id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
         this.email = email;
@@ -22,11 +30,11 @@ public class User {
     }
 
     public void setUserID(String ID) {
-        this.user_id = ID;
+        this.id = ID;
     }
 
     public String getUserID() {
-        return this.user_id;
+        return this.id;
     }
 
     public void setUsername(String usernmae) {
@@ -54,11 +62,11 @@ public class User {
     }
 
     public String getUser_id() {
-        return this.user_id;
+        return this.id;
     }
 
     public void setUser_id(String user_id) {
-        this.user_id = user_id;
+        this.id = user_id;
     }
 
     public String getRole_id() {
@@ -68,5 +76,7 @@ public class User {
     public void setRole_id(String role_id) {
         this.role_id = role_id;
     }
-
+    public String convertToData() {
+        return this.id + "/" + this.username + "/" + this.password + "/" + this.email + "/" + this.role_id;
+    }
 }

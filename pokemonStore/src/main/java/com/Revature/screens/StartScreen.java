@@ -27,9 +27,9 @@ public class StartScreen extends BaseScreen{
 
             switch(choice) {
                 case "1":
-                    routerService.navigate("./login");
+                    routerService.navigate("/login").startInterface();
                 case "2":
-                    routerService.navigate("./register");
+                    routerService.navigate("/register").startInterface();
                 case "x":
                     return;
                 default:

@@ -2,22 +2,24 @@ package com.Revature.daos;
 
 import java.util.List;
 
-public class CartDAO implements CrudDAO{
+import com.Revature.models.Cart;
+
+public class CartDAO implements CrudDAO<Cart>{
 
     @Override
-    public void save(Object obj) {
+    public Cart save(Cart obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 
     @Override
-    public void update(Object obj) {
+    public Cart update(Cart obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
-    public Object delete(String ID) {
+    public Cart delete(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
@@ -29,7 +31,7 @@ public class CartDAO implements CrudDAO{
     }
 
     @Override
-    public Object findByID(String ID) {
+    public Cart findByID(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByID'");
     }

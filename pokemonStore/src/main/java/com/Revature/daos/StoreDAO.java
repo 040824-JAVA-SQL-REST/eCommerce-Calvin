@@ -2,34 +2,36 @@ package com.Revature.daos;
 
 import java.util.List;
 
-public class StoreDAO implements CrudDAO<StoreDAO>{
+import com.Revature.models.Store;
+
+public class StoreDAO implements CrudDAO<Store>{
 
     @Override
-    public void save(StoreDAO obj) {
+    public Store save(Store obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 
     @Override
-    public void update(StoreDAO obj) {
+    public Store update(Store obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
-    public StoreDAO delete(String ID) {
+    public Store delete(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
-    public List<StoreDAO> findAll() {
+    public List<Store> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     @Override
-    public StoreDAO findByID(String ID) {
+    public Store findByID(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByID'");
     }
