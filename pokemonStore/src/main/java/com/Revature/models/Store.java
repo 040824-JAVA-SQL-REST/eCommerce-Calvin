@@ -4,7 +4,7 @@ import java.util.UUID;
 public class Store {
     private String store_id;
     private String name;
-    private double rating;
+    private String rating;
 
     public Store() {
     }
@@ -30,11 +30,11 @@ public class Store {
         this.name = name;
     }
 
-    public double getRating() {
+    public String getRating() {
         return this.rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 }

@@ -1,6 +1,5 @@
 package com.Revature.daos;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CrudDAO<T> {
@@ -11,7 +10,7 @@ public interface CrudDAO<T> {
 
     T delete(String ID);
 
-    List<T> findAll() throws IOException;
+    List<T> findAll();
 
     T findByID(String ID);
 }

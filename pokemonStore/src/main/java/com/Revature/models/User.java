@@ -61,14 +61,6 @@ public class User {
         return this.email;
     }
 
-    public String getUser_id() {
-        return this.id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.id = user_id;
-    }
-
     public String getRole_id() {
         return this.role_id;
     }
