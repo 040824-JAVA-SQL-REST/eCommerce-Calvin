@@ -19,7 +19,6 @@
 *.rar
 *.tar
 *.zip
-
 # Logs and databases #
 ######################
 *.log
@@ -32,6 +31,12 @@
 .project
 .settings/
 target/
+
+
+# removing .vscode  #
+#####################
+*.vscode
+.properties
 
 # OS generated files #
 ######################
