@@ -37,8 +37,20 @@ public class UserDAO implements CrudDAO<User>{
 
     @Override
     public User update(User obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("UPDATE users SET username=?, password=?, email=?, role_id=? WHERE id=?")) {
+            ps.setString(1, obj.getUsername());
+            ps.setString(2, obj.getPassword());
+            ps.setString(3, obj.getEmail());
+            ps.setString(4, obj.getRole_id());
+            ps.setString(5, obj.getUserID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return obj;
     }
 
     @Override

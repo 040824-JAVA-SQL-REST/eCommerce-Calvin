@@ -18,9 +18,8 @@ public class StoreDAO implements CrudDAO<Store>{
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO stores (id, name, rating VALUES (?, ?, ?))")) {
             ps.setString(1, obj.getStore_id());
-            ps.setString(2, obj.getStore_id());
-            ps.setString(3, obj.getStore_id());
-
+            ps.setString(2, obj.getName());
+            ps.setString(3, obj.getRating());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -32,8 +31,18 @@ public class StoreDAO implements CrudDAO<Store>{
 
     @Override
     public Store update(Store obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("UPDATE stores SET name = ?, rating = ? WHERE id = ?")) {
+            ps.setString(3, obj.getStore_id());
+            ps.setString(1, obj.getName());
+            ps.setString(2, obj.getRating());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return obj;
     }
 
     @Override
@@ -44,8 +53,8 @@ public class StoreDAO implements CrudDAO<Store>{
             while(rs.next()) {
                 Store store = new Store();
                 store.setStore_id("id");
-                store.setName("username");
-                store.setRating("password");
+                store.setName("name");
+                store.setRating("rating");
                 return store;
             }
         } catch (SQLException e) {

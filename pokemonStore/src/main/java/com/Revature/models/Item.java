@@ -6,13 +6,13 @@ public class Item {
     private String item_id;
     private String name;
     private int value;
-    private double grade;
+    private int grade;
 
     public Item() {
 
     }
 
-    public Item(String name, int value, double grade) {
+    public Item(String name, int value, int grade) {
         this.item_id = UUID.randomUUID().toString();
         this.name = name;
         this.value = value;
@@ -50,11 +50,11 @@ public class Item {
         this.value = value;
     }
 
-    public double getGrade() {
+    public int getGrade() {
         return this.grade;
     }
 
-    public void setGrade(double grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
     }
 
