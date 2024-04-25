@@ -21,19 +21,24 @@ public class UserService {
     }
 
     public boolean isValidUsername(String username) {
-
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
+
     public boolean validPassword(String password) {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
     }
 
     public void save(User user) {
         String defaultID = roleService.getRoleIDByName("DEFAULT");
+        System.out.println(user);
         if (defaultID == null || defaultID.isEmpty()) {
             throw new ResourceNotFoundException("Default role not found");
         }
         user.setRole_id(defaultID);
         userDAO.save(user);
+    }
+
+    public User login(String username, String password) {
+        return userDAO.userExists(username, password);
     }
 }
