@@ -8,6 +8,7 @@ public class User {
     private String password;
     private String email;
     private String role_id;
+    private String cart_id;
 
     public User () {
 
@@ -19,6 +20,7 @@ public class User {
         this.password = data[2];
         this.email = data[3];
         this.role_id = data[4];
+        this.cart_id = data[5];
     }
 
     public User(String username, String password, String email) {
@@ -27,6 +29,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.role_id = "DEFAULT";
+        this.cart_id = new Cart().getCart_id();
     }
 
     public void setUserID(String ID) {
@@ -68,6 +71,15 @@ public class User {
     public void setRole_id(String role_id) {
         this.role_id = role_id;
     }
+
+    public void setCartID() {
+        this.cart_id = new Cart().getCart_id();
+    }
+
+    public String getCartID() {
+        return this.cart_id;
+    }
+    
     public String convertToData() {
         return this.id + "/" + this.username + "/" + this.password + "/" + this.email + "/" + this.role_id;
     }

@@ -5,50 +5,55 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.Revature.models.Cart;
+import com.Revature.models.Review;
 import com.Revature.utils.ConnectionFactory;
+
 import java.io.IOException;
 
-
-public class CartDAO implements CrudDAO<Cart>{
+public class reviewDAO implements CrudDAO<Review> {
 
     @Override
-    public Cart save(Cart obj) {
+    public Review save(Review review){
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO carts (id, user_id) VALUES (?, ?)")) {
-            ps.setString(1, obj.getCart_id());
-            ps.setString(2, obj.getBelongsTo());
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO items (id, name, value, grade) VALUES (?, ?, ?, ?)")) {
+            ps.setString(1, review.getId());
+            ps.setInt(2, review.getRating());
+            ps.setString(3, review.getUser_id());
+            ps.setString(4, review.getStore_id());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Error saving review to the database");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }
-        return obj;
+        return review;
     }
 
     @Override
-    public Cart update(Cart obj) {
+    public Review update(Review obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
-    public Cart delete(String ID) {
+    public Review delete(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
-    public List findAll(){
+    public List<Review> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     @Override
-    public Cart findByID(String ID) {
+    public Review findByID(String ID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByID'");
     }
-    
+    public Review findAllReviewByUserID(String ID) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByID'");
+    }
 }

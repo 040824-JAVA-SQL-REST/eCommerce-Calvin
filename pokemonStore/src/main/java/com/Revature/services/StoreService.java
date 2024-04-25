@@ -8,11 +8,9 @@ import com.Revature.models.Store;
 public class StoreService {
 
     private StoreDAO storeDAO;
-    private final RoleService roleService;
 
-    public StoreService(RoleService roleService, StoreDAO storeDAO) {
+    public StoreService(StoreDAO storeDAO) {
         this.storeDAO = storeDAO;
-        this.roleService = roleService;
     }
 
     public boolean isUnique(String name) {

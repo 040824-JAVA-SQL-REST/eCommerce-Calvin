@@ -29,7 +29,6 @@ public class ConnectionFactory {
         InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties");
         Properties p = new Properties();
         p.load(is);
-        
         conn = DriverManager.getConnection(p.getProperty("url"), p.getProperty("username"), p.getProperty("password"));
     }
 }

@@ -1,38 +1,26 @@
 package com.Revature.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Cart {
-    private String cart_id;
-    private List<Item> items;
+    private String id;
     private String belongsTo;
     
     public Cart() {
 
     }
 
-    public Cart(String user_id) {
-        this.cart_id = UUID.randomUUID().toString();
-        this.items = new ArrayList<Item>();
-        this.belongsTo = user_id;
+    public Cart(String id) {
+        this.id = UUID.randomUUID().toString();
+        this.belongsTo = id;
     }
 
     public String getCart_id() {
-        return this.cart_id;
+        return this.id;
     }
 
-    public void setCart_id(String cart_id) {
-        this.cart_id = cart_id;
-    }
-
-    public List<Item> getItems() {
-        return this.items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setCart_id(String id) {
+        this.id = id;
     }
 
     public String getBelongsTo() {

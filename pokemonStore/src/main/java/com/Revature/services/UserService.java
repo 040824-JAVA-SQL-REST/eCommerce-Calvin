@@ -1,11 +1,13 @@
 package com.Revature.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.Revature.daos.UserDAO;
 import com.Revature.models.User;
 import com.Revature.utils.custom_exceptions.ResourceNotFoundException;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 public class UserService {
     private final UserDAO userDAO;
     private final RoleService roleService;
@@ -35,10 +37,16 @@ public class UserService {
             throw new ResourceNotFoundException("Default role not found");
         }
         user.setRole_id(defaultID);
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(hashedPassword);
+        
         userDAO.save(user);
     }
 
-    public User login(String username, String password) {
-        return userDAO.userExists(username, password);
+    public Optional<User> login(String username, String password) {
+        return userDAO.findAll()
+        .stream()
+        .filter(u -> u.getUsername().equals(username) && BCrypt.checkpw(password, u.getPassword()))
+        .findFirst();
     }
 }
