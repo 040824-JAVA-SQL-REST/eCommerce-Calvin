@@ -35,7 +35,7 @@ target/
 
 # removing .vscode  #
 #####################
-*.vscode
+.vscode/
 pokemonStore/src/main/resources/application.properties
 
 # OS generated files #
