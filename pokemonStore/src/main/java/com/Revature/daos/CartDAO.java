@@ -2,11 +2,14 @@ package com.Revature.daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.Revature.models.Cart;
 import com.Revature.utils.ConnectionFactory;
+
 import java.io.IOException;
 
 
@@ -29,26 +32,75 @@ public class CartDAO implements CrudDAO<Cart>{
 
     @Override
     public Cart update(Cart obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("UPDATE carts SET user_id=? WHERE id=?")) {
+            ps.setString(2, obj.getCart_id());
+            ps.setString(1, obj.getBelongsTo());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return obj;
     }
 
     @Override
     public Cart delete(String ID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        Cart deletedItem = null;
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM carts WHERE id = ?")) {
+            ps.setString(1, ID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                deletedItem = new Cart();
+                deletedItem.setCart_id(ID);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting item from the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return deletedItem;
     }
 
     @Override
-    public List findAll(){
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    public List<Cart> findAll(){
+        List<Cart> carts = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users");
+        ResultSet rs = ps.executeQuery();) {
+            while(rs.next()) {
+                Cart cart = new Cart();
+                cart.setCart_id(rs.getString("id"));
+                cart.setBelongsTo(rs.getString("user_id"));
+                carts.add(cart);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return carts;
     }
 
     @Override
     public Cart findByID(String ID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByID'");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+        ResultSet rs = ps.executeQuery();) {
+            while(rs.next()) {
+                Cart cart = new Cart();
+                cart.setCart_id(rs.getString("id"));
+                cart.setBelongsTo(rs.getString("user_id"));
+                return cart;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return null;
     }
     
 }

@@ -1,9 +1,6 @@
 package com.Revature.daos;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,16 +69,21 @@ public class ItemDAO implements CrudDAO<Item>{
     @Override
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
-        String line;
-        try(
-            InputStream is = getClass().getClassLoader().getResourceAsStream("db/item.txt");
-            InputStreamReader isr = new InputStreamReader(is); 
-            BufferedReader reader = new BufferedReader(isr)) {
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM items");
+        ResultSet rs = ps.executeQuery();) {
+            while(rs.next()) {
+                Item item = new Item();
+                item.setItem_id(rs.getString("id"));
+                item.setName(rs.getString("name"));
+                item.setValue(rs.getInt("value"));
+                item.setGrade(rs.getInt("grade"));
+                items.add(item);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Cannot find application.properties file");
         }
         return items;
     }

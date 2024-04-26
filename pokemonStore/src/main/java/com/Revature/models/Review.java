@@ -5,6 +5,7 @@ import java.util.UUID;
 public class Review {
     private String id;
     private int rating;
+    private String message;
     private String user_id;
     private String store_id;
 
@@ -42,6 +43,14 @@ public class Review {
 
     public void setStore_id(String store_id) {
         this.store_id = store_id;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

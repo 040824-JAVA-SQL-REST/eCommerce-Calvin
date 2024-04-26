@@ -92,7 +92,7 @@ public class UserDAO implements CrudDAO<User>{
                 users.add(user);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }

@@ -2,7 +2,6 @@ package com.Revature.services;
 
 import java.util.Scanner;
 
-import com.Revature.daos.RoleDAO;
 import com.Revature.models.User;
 import com.Revature.screens.BaseScreen;
 import com.Revature.screens.LoginScreen;
