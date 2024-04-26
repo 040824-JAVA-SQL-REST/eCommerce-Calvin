@@ -30,5 +30,4 @@ public class Cart {
     public void setBelongsTo(String belongsTo) {
         this.belongsTo = belongsTo;
     }
-
 }

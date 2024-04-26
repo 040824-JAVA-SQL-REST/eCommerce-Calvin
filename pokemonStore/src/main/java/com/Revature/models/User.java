@@ -2,6 +2,8 @@ package com.Revature.models;
 
 import java.util.UUID;
 
+import com.Revature.dtos.requests.NewRegisterRequest;
+
 public class User {
     private String id;
     private String username;
@@ -9,6 +11,7 @@ public class User {
     private String email;
     private String role_id;
     private String cart_id;
+    private Role role;
 
     public User () {
 
@@ -28,16 +31,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role_id = "DEFAULT";
         this.cart_id = new Cart().getCart_id();
     }
 
-    public void setUserID(String ID) {
-        this.id = ID;
-    }
-
-    public String getUserID() {
-        return this.id;
+    public User (NewRegisterRequest req) {
+        this.id = UUID.randomUUID().toString();
+        this.username = req.getUsername();
+        this.password = req.getPassword();
+        this.email = req.getEmail();
     }
 
     public void setUsername(String usernmae) {
@@ -72,12 +73,36 @@ public class User {
         this.role_id = role_id;
     }
 
-    public void setCartID() {
-        this.cart_id = new Cart().getCart_id();
+    public void setCartID(String cartID) {
+        this.cart_id = cartID;
     }
 
     public String getCartID() {
         return this.cart_id;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCart_id() {
+        return this.cart_id;
+    }
+
+    public void setCart_id(String cart_id) {
+        this.cart_id = cart_id;
+    }
+
+    public Role getRole() {
+        return this.role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
     
     public String convertToData() {

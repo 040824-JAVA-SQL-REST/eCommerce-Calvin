@@ -26,7 +26,7 @@ public class RegisterScreen extends BaseScreen{
             System.out.println("\nUsername: ");
             String username = scan.nextLine();
         
-            if (!userService.isUnique(username)) {
+            if (!userService.isValidUsername(username)) {
                 clearScreen();
                 System.out.println("Username is already taken");
                 pause(scan);

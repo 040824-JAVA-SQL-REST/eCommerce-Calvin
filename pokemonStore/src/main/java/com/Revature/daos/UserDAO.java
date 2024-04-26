@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.Revature.models.Role;
 import com.Revature.models.User;
 import com.Revature.utils.ConnectionFactory;
 
@@ -21,14 +22,14 @@ public class UserDAO implements CrudDAO<User>{
     public User save(User obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO users (id, username, password, email, role_id) VALUES (?, ?, ?, ?, ?)")) {
-            ps.setString(1, obj.getUserID());
+            ps.setString(1, obj.getId());
             ps.setString(2, obj.getUsername());
             ps.setString(3, obj.getPassword());
             ps.setString(4, obj.getEmail());
             ps.setString(5, obj.getRole_id());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }
@@ -43,7 +44,7 @@ public class UserDAO implements CrudDAO<User>{
             ps.setString(2, obj.getPassword());
             ps.setString(3, obj.getEmail());
             ps.setString(4, obj.getRole_id());
-            ps.setString(5, obj.getUserID());
+            ps.setString(5, obj.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -60,11 +61,11 @@ public class UserDAO implements CrudDAO<User>{
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 User user = new User();
-                user.setUserID("id");
-                user.setUsername("username");
-                user.setPassword("password");
-                user.setEmail("email");
-                user.setRole_id("role");
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setRole_id(rs.getString("role_id"));
                 return user;
             }
         } catch (SQLException e) {
@@ -83,14 +84,12 @@ public class UserDAO implements CrudDAO<User>{
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 User user = new User();
-                user.setUserID("id");
-                user.setUsername("username");
-                user.setPassword("password");
-                user.setEmail("email");
-                user.setRole_id("role");
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setRole_id(rs.getString("role_id"));
                 users.add(user);
-                System.out.println("printing user");
-                System.out.println(user);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -107,11 +106,11 @@ public class UserDAO implements CrudDAO<User>{
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 User user = new User();
-                user.setUserID("id");
-                user.setUsername("username");
-                user.setPassword("password");
-                user.setEmail("email");
-                user.setRole_id("role");
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setRole_id(rs.getString("role_id"));
                 return user;
             }
         } catch (SQLException e) {
@@ -129,11 +128,11 @@ public class UserDAO implements CrudDAO<User>{
             if (rs.next()) {
                 System.out.println("found a user");
                 User user = new User();
-                user.setUserID("id");
-                user.setUsername("username");
-                user.setPassword("password");
-                user.setEmail("email");
-                user.setRole_id("role");
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setRole_id(rs.getString("role_id"));
                 return user;
             }
         }
@@ -144,5 +143,29 @@ public class UserDAO implements CrudDAO<User>{
             throw new RuntimeException("Cannot find application.properties file");
         }
         return null;
+    }
+    public List<User> findAllWithRoles() {
+        List<User> users = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users_with_role");
+        ResultSet rs = ps.executeQuery();) {
+            while(rs.next()) {
+                User user = new User();
+                Role role = new Role();
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setRole_id(rs.getString("role_id"));
+                role.setId("role_id");
+                role.setName("role_name");
+                user.setRole(role);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return users;
     }
 }

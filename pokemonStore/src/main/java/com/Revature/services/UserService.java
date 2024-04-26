@@ -17,7 +17,7 @@ public class UserService {
         this.roleService = roleService;
     }
 
-    public boolean isUnique(String username) {
+    public boolean uniqueUsername(String username) {
         List<User> users = userDAO.findAll();
         return users.stream().noneMatch(u -> u.getUsername().equals(username));
     }
@@ -30,21 +30,21 @@ public class UserService {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
     }
 
-    public void save(User user) {
+    public User save(User user) {
         String defaultID = roleService.getRoleIDByName("DEFAULT");
         System.out.println(user);
         if (defaultID == null || defaultID.isEmpty()) {
             throw new ResourceNotFoundException("Default role not found");
         }
         user.setRole_id(defaultID);
-        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
         user.setPassword(hashedPassword);
         
-        userDAO.save(user);
+        return userDAO.save(user);
     }
 
     public Optional<User> login(String username, String password) {
-        return userDAO.findAll()
+        return userDAO.findAllWithRoles()
         .stream()
         .filter(u -> u.getUsername().equals(username) && BCrypt.checkpw(password, u.getPassword()))
         .findFirst();
