@@ -2,17 +2,14 @@ package com.Revature.utils;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import com.Revature.controllers.UserController;
 import com.Revature.daos.CartDAO;
 import com.Revature.daos.RoleDAO;
 import com.Revature.daos.StoreDAO;
 import com.Revature.daos.UserDAO;
-import com.Revature.models.User;
 import com.Revature.services.CartService;
 import com.Revature.services.RoleService;
-import com.Revature.services.RouterService;
 import com.Revature.services.StoreService;
 import com.Revature.services.UserService;
 
