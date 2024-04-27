@@ -39,9 +39,9 @@ public class StoreController {
                 return;
             }
 
-            if (principal.getRole().getName().equalsIgnoreCase("admin")) {
+            if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
                 ctx.status(403); // forbiddon
-                errors.put("error", "You don't have access to do this");
+                errors.put("error", "You are not an admin");
                 ctx.json(errors);
                 return;
             }
@@ -60,6 +60,33 @@ public class StoreController {
                 return;
             }
             storeService.createStore(req.getName());
+        } catch(Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
+    }
+    public void getAllStores(Context ctx) {
+        Map<String, String> errors = new HashMap<>();
+        try {
+            // get token from header
+            String token = ctx.header("auth-token");
+            if (token == null || token.isEmpty()) {
+                ctx.status(401); // unauthorized
+                errors.put("error", "token is null or empty");
+                ctx.json(errors);
+                return;
+            }  
+            // parse token to get the principal (auth)
+
+            Principal principal = tokenService.parseToken(token);
+            if (principal == null) {
+                ctx.status(401); // unauthorized
+                errors.put("error", "principal is null");
+                ctx.json(errors);
+                return;
+            }
+            System.out.println(storeService.getAllStores().get(0).getName());
+            ctx.json(storeService.getAllStores());
         } catch(Exception e) {
             ctx.status(500);
             e.printStackTrace();

@@ -49,7 +49,7 @@ public class CartDAO implements CrudDAO<Cart>{
     public Cart delete(String ID) {
         Cart deletedItem = null;
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM carts WHERE id = ?")) {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM carts WHERE user_id = ?")) {
             ps.setString(1, ID);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -87,8 +87,9 @@ public class CartDAO implements CrudDAO<Cart>{
     @Override
     public Cart findByID(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Cart cart = new Cart();
                 cart.setCart_id(rs.getString("id"));

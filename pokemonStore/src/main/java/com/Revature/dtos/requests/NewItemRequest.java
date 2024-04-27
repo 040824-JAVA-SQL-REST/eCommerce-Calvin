@@ -1,38 +1,18 @@
-package com.Revature.models;
+package com.Revature.dtos.requests;
 
-import java.util.UUID;
-
-public class Item {
-    private String item_id;
+public class NewItemRequest {
     private String name;
     private int value;
     private int grade;
     private String store_id;
-    public Item() {
-
+    public NewItemRequest() {
     }
-
-    public Item(String name, int value, int grade, String store_id) {
-        this.item_id = UUID.randomUUID().toString();
+    
+    public NewItemRequest(String name, int value, int grade, String store_id) {
         this.name = name;
         this.value = value;
         this.grade = grade;
         this.store_id = store_id;
-    }
-
-    public Item(String name, int value) {
-        this.item_id = UUID.randomUUID().toString();
-        this.name = name;
-        this.value = value;
-    }
-
-
-    public String getItem_id() {
-        return this.item_id;
-    }
-
-    public void setItem_id(String item_id) {
-        this.item_id = item_id;
     }
 
     public String getName() {
@@ -67,4 +47,4 @@ public class Item {
         this.store_id = store_id;
     }
 
-}
+}   

@@ -57,23 +57,23 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public User delete(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE * FROM users WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
-            while(rs.next()) {
-                User user = new User();
-                user.setId(rs.getString("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setRole_id(rs.getString("role_id"));
-                return user;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+         PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
+        ps.setString(1, ID);
+        int rowsAffected = ps.executeUpdate();
+        if (rowsAffected > 0) {
+            User user = new User();
+            user.setId(ID);
+            user.setUsername(ID);
+            return user;
+        } else {
+            return null;
         }
-        return null;
+        
+    } catch (SQLException e) {
+        throw new RuntimeException("Error executing SQL query", e);
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties file", e);
+    }
     }
 
     @Override
@@ -102,8 +102,9 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public User findByID(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 User user = new User();
                 user.setId(rs.getString("id"));
@@ -123,8 +124,10 @@ public class UserDAO implements CrudDAO<User>{
 
     public User userExists(String username, String password) {
         try ( Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM account WHERE username = ? AND password = ?");
-        ResultSet rs = ps.executeQuery()){
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM account WHERE username = ? AND password = ?")){
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 System.out.println("found a user");
                 User user = new User();

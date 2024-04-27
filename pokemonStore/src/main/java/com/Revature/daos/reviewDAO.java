@@ -52,7 +52,7 @@ public class reviewDAO implements CrudDAO<Review> {
     @Override
     public Review delete(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE * FROM reviews WHERE id = ?");
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM reviews WHERE id = ?");
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 Review review = new Review();
@@ -115,6 +115,7 @@ public class reviewDAO implements CrudDAO<Review> {
         }
         return null;
     }
+    
     public List<Review> findAllReviewByUserID(String ID) {
         List<Review> reviews = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getInstance().getConnection();

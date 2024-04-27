@@ -49,4 +49,8 @@ public class UserService {
         .filter(u -> u.getUsername().equals(username) && BCrypt.checkpw(password, u.getPassword()))
         .findFirst();
     }
+
+    public User delete(String id) {
+        return userDAO.delete(id);
+    }
 }

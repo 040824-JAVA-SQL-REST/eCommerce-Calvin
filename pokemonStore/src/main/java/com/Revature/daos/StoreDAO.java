@@ -16,13 +16,13 @@ public class StoreDAO implements CrudDAO<Store>{
     @Override
     public Store save(Store obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO stores (id, name, rating VALUES (?, ?, ?))")) {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO stores (id, name) VALUES (?, ?)")) {
             ps.setString(1, obj.getStore_id());
             ps.setString(2, obj.getName());
-            ps.setString(3, obj.getRating());
+            // ps.setString(3, obj.getRating());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }
@@ -32,10 +32,10 @@ public class StoreDAO implements CrudDAO<Store>{
     @Override
     public Store update(Store obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE stores SET name = ?, rating = ? WHERE id = ?")) {
+        PreparedStatement ps = conn.prepareStatement("UPDATE stores SET name = ? WHERE id = ?")) {
             ps.setString(3, obj.getStore_id());
             ps.setString(1, obj.getName());
-            ps.setString(2, obj.getRating());
+            // ps.setString(2, obj.getRating());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -48,13 +48,14 @@ public class StoreDAO implements CrudDAO<Store>{
     @Override
     public Store delete(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE * FROM stores WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM stores WHERE id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Store store = new Store();
-                store.setStore_id("id");
-                store.setName("name");
-                store.setRating("rating");
+                store.setStore_id(rs.getString("id"));
+                store.setName(rs.getString("name"));
+                // store.setRating("rating");
                 return store;
             }
         } catch (SQLException e) {
@@ -73,9 +74,10 @@ public class StoreDAO implements CrudDAO<Store>{
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 Store store = new Store();
-                store.setStore_id("id");
-                store.setName("name");
-                store.setRating("rating");
+                store.setStore_id(rs.getString("id"));
+                store.setName(rs.getString("name"));
+                // store.setRating("rating");
+                stores.add(store);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -88,13 +90,14 @@ public class StoreDAO implements CrudDAO<Store>{
     @Override
     public Store findByID(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM stores WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM stores WHERE id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Store store = new Store();
-                store.setStore_id("id");
-                store.setName("username");
-                store.setRating("rating");
+                store.setStore_id(rs.getString("id"));
+                store.setName(rs.getString("username"));
+                // store.setRating("rating");
                 return store;
             }
         } catch (SQLException e) {
@@ -105,6 +108,23 @@ public class StoreDAO implements CrudDAO<Store>{
         return null;
     }
 
-
-    
+    public Store findByName(String name) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM stores WHERE name = ?")) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Store store = new Store();
+                store.setStore_id(rs.getString("id"));
+                store.setName(rs.getString("username"));
+                // store.setRating("rating");
+                return store;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return null;
+    }
 }

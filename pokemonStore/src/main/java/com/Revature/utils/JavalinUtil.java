@@ -38,10 +38,12 @@ public class JavalinUtil {
                 path("/users", () -> {
                     post("/register", userController::register);
                     post("/login", userController::login);
+                    delete(userController::delete);
                 });
 
                 path("/stores", () -> {
                     post(storeController::addStore);
+                    get(storeController::getAllStores);
                 });
             });
         });

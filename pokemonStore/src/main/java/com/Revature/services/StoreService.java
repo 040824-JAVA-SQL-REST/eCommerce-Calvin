@@ -24,8 +24,12 @@ public class StoreService {
     public Store createStore(String name) {
         Store newStore = new Store(name);
         return storeDAO.save(newStore);
-
     }
+
+    public Store findStoreByName(String name) {
+        return storeDAO.findByID(name);
+    }
+
     public boolean isValid(String name) {
         return storeDAO.findAll()
         .stream()

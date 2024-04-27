@@ -51,7 +51,7 @@ public class ItemDAO implements CrudDAO<Item>{
     public Item delete(String ID) {
         Item deletedItem = null;
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM items WHERE id = ?")) {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM items WHERE id = ?")) {
             ps.setString(1, ID);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -91,8 +91,9 @@ public class ItemDAO implements CrudDAO<Item>{
     @Override
     public Item findByID(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM items WHERE id = ?");
-        ResultSet rs = ps.executeQuery();) {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM items WHERE id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Item item = new Item();
                 item.setItem_id("id");

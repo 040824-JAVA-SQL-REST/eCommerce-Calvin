@@ -15,4 +15,7 @@ public class CartService {
         cart.setBelongsTo(user.getId());
         return cartDAO.save(cart);
     }
+    public Cart delete(String id) {
+        return cartDAO.delete(id);
+    }
 }
