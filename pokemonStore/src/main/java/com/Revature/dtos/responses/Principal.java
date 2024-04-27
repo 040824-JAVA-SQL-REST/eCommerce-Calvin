@@ -3,22 +3,22 @@ package com.Revature.dtos.responses;
 import com.Revature.models.Role;
 import com.Revature.models.User;
 
-public class Principle {
+public class Principal {
     private String id;
     private String username;
     private Role role;
 
 
-    public Principle() {
+    public Principal() {
     }
 
-    public Principle(User user) {
+    public Principal(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.role = user.getRole();
     }
 
-    public Principle(String id, String username, Role role) {
+    public Principal(String id, String username, Role role) {
         this.id = id;
         this.username = username;
         this.role = role;

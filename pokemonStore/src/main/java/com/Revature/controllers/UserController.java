@@ -5,19 +5,22 @@ import java.util.Optional;
 
 import com.Revature.dtos.requests.NewLoginRequest;
 import com.Revature.dtos.requests.NewRegisterRequest;
-import com.Revature.dtos.responses.Principle;
+import com.Revature.dtos.responses.Principal;
 import com.Revature.models.Cart;
 import com.Revature.models.User;
 import com.Revature.services.CartService;
 import com.Revature.services.UserService;
+import com.Revature.services.TokenService;
 
 import io.javalin.http.Context;
 
 public class UserController {
     private UserService userService;
     private CartService cartService;
+    private final TokenService tokenService;
 
-    public UserController(UserService userService, CartService cartService) {
+    public UserController(UserService userService, CartService cartService, TokenService tokenService) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.cartService = cartService;
     }
@@ -44,8 +47,7 @@ public class UserController {
             Cart newCart = new Cart(newUser.getId());
             newUser.setCartID(newCart.getCart_id());
             newUser = userService.save(newUser);
-            newCart = cartService.save(newCart, newUser);
-            // create json web token week3 day 2
+            newCart = cartService.save(newCart, newUser);            
             ctx.status(200);
         } catch (Exception e) {
             ctx.status(500);
@@ -63,8 +65,12 @@ public class UserController {
                 return;
             }
             User foundUser = existingUser.get();
-            Principle principle = new Principle(foundUser);
+            Principal principle = new Principal(foundUser);
             System.out.println(foundUser.toString());
+            // create jswt
+            String token = tokenService.generateToken(principle);
+            // set token to header
+            ctx.header("auth-token", token);
             ctx.json(principle);
             ctx.status(200);
         } catch (Exception e) {
