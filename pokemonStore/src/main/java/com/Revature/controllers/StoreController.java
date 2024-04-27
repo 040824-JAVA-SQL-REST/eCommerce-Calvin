@@ -25,7 +25,7 @@ public class StoreController {
             String token = ctx.header("auth-token");
             if (token == null || token.isEmpty()) {
                 ctx.status(401); // unauthorized
-                errors.put("error", "Your token is not valid");
+                errors.put("error", "token is null or empty");
                 ctx.json(errors);
                 return;
             }  
@@ -34,7 +34,7 @@ public class StoreController {
             Principal principal = tokenService.parseToken(token);
             if (principal == null) {
                 ctx.status(401); // unauthorized
-                errors.put("error", "Your token is not valid");
+                errors.put("error", "principal is null");
                 ctx.json(errors);
                 return;
             }
