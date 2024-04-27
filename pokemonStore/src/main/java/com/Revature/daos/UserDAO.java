@@ -156,8 +156,8 @@ public class UserDAO implements CrudDAO<User>{
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setRole_id(rs.getString("role_id"));
-                role.setId("role_id");
-                role.setName("role_name");
+                role.setId(rs.getString("role_id"));
+                role.setName(rs.getString("role_name"));
                 user.setRole(role);
                 users.add(user);
             }

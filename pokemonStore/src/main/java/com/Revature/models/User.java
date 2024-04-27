@@ -104,13 +104,4 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-    
-    public String convertToData() {
-        return this.id + "/" + this.username + "/" + this.password + "/" + this.email + "/" + this.role_id;
-    }
-
-    @Override
-    public String toString() {
-        return this.id + "/" + this.username + "/" + this.password + "/" + this.email + "/" + this.role_id;
-    }
 }

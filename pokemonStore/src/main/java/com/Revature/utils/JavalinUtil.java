@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.Revature.controllers.ItemController;
+import com.Revature.controllers.StoreController;
 import com.Revature.controllers.UserController;
 import com.Revature.daos.CartDAO;
 import com.Revature.daos.RoleDAO;
@@ -28,16 +29,20 @@ public class JavalinUtil {
             new CartService(
             new CartDAO()),
             new TokenService());
-            
+        StoreController storeController = new StoreController (
+            new StoreService(new StoreDAO()),
+            new TokenService()
+        );
         return Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/users", () -> {
                     post("/register", userController::register);
                     post("/login", userController::login);
                 });
-                // path("/items", () -> {
-                //     post("/item", itemController::post);
-                // })
+
+                path("/stores", () -> {
+                    post(storeController::addStore);
+                });
             });
         });
     }

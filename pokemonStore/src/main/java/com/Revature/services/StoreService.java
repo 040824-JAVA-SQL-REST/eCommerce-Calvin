@@ -18,8 +18,17 @@ public class StoreService {
         return stores.stream().noneMatch(s -> s.getName().equals(name));
     }
 
-    public void save(Store store) {
-        
+    public List<Store> getAllStores() {
+        return storeDAO.findAll();
     }
+    public Store createStore(String name) {
+        Store newStore = new Store(name);
+        return storeDAO.save(newStore);
 
+    }
+    public boolean isValid(String name) {
+        return storeDAO.findAll()
+        .stream()
+        .noneMatch(s -> s.getName().equalsIgnoreCase(name));
+    }
 }
