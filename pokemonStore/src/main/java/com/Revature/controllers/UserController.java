@@ -106,4 +106,10 @@ public class UserController {
             e.printStackTrace();
         }
     }
+    public void checkOut(Context ctx) {
+        HashMap<String,String> errors = new HashMap<>();
+        
+    }
+
+
 }

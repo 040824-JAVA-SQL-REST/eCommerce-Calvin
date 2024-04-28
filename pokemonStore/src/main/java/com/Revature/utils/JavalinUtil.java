@@ -1,12 +1,17 @@
 package com.Revature.utils;
 
+import static io.javalin.apibuilder.ApiBuilder.delete;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 import java.io.IOException;
-import java.sql.SQLException;
 
 import com.Revature.controllers.ItemController;
 import com.Revature.controllers.StoreController;
 import com.Revature.controllers.UserController;
 import com.Revature.daos.CartDAO;
+import com.Revature.daos.ItemDAO;
 import com.Revature.daos.RoleDAO;
 import com.Revature.daos.StoreDAO;
 import com.Revature.daos.UserDAO;
@@ -17,7 +22,6 @@ import com.Revature.services.StoreService;
 import com.Revature.services.TokenService;
 import com.Revature.services.UserService;
 
-import static io.javalin.apibuilder.ApiBuilder.*;
 import io.javalin.Javalin;
 
 public class JavalinUtil {
@@ -33,6 +37,10 @@ public class JavalinUtil {
             new StoreService(new StoreDAO()),
             new TokenService()
         );
+        ItemController itemController = new ItemController(
+            new ItemService(new ItemDAO()), 
+            new TokenService(), 
+            getStoreService());
         return Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/users", () -> {
@@ -44,6 +52,11 @@ public class JavalinUtil {
                 path("/stores", () -> {
                     post(storeController::addStore);
                     get(storeController::getAllStores);
+                });
+
+                path("/items", () -> {
+                    post(itemController::addItem);
+                    delete(itemController::delete);
                 });
             });
         });

@@ -4,15 +4,17 @@ public class NewItemRequest {
     private String name;
     private int value;
     private int grade;
-    private String store_id;
+    private String storeName;
+    private int quantity;
     public NewItemRequest() {
     }
     
-    public NewItemRequest(String name, int value, int grade, String store_id) {
+    public NewItemRequest(String name, int grade, int value, int quantity, String storeName) {
         this.name = name;
         this.value = value;
         this.grade = grade;
-        this.store_id = store_id;
+        this.quantity = quantity;
+        this.storeName = storeName;
     }
 
     public String getName() {
@@ -39,12 +41,19 @@ public class NewItemRequest {
         this.grade = grade;
     }
 
-    public String getStore_id() {
-        return this.store_id;
+    public String getStoreName() {
+        return this.storeName;
     }
 
-    public void setStore_id(String store_id) {
-        this.store_id = store_id;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }   

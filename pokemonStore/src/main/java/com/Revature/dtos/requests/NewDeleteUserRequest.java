@@ -7,6 +7,7 @@ public class NewDeleteUserRequest {
     public NewDeleteUserRequest() {
 
     }
+    
     public NewDeleteUserRequest(String id, String cart_id) {
         this.id = id;
         this.cart_id = cart_id;

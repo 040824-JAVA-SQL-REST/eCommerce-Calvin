@@ -96,7 +96,7 @@ public class StoreDAO implements CrudDAO<Store>{
             while(rs.next()) {
                 Store store = new Store();
                 store.setStore_id(rs.getString("id"));
-                store.setName(rs.getString("username"));
+                store.setName(rs.getString("name"));
                 // store.setRating("rating");
                 return store;
             }
@@ -116,7 +116,7 @@ public class StoreDAO implements CrudDAO<Store>{
             while(rs.next()) {
                 Store store = new Store();
                 store.setStore_id(rs.getString("id"));
-                store.setName(rs.getString("username"));
+                store.setName(rs.getString("name"));
                 // store.setRating("rating");
                 return store;
             }

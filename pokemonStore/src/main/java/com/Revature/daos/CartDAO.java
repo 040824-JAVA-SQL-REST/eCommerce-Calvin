@@ -68,7 +68,7 @@ public class CartDAO implements CrudDAO<Cart>{
     public List<Cart> findAll(){
         List<Cart> carts = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users");
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM carts");
         ResultSet rs = ps.executeQuery();) {
             while(rs.next()) {
                 Cart cart = new Cart();
@@ -87,7 +87,7 @@ public class CartDAO implements CrudDAO<Cart>{
     @Override
     public Cart findByID(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM carts WHERE user_id = ?")) {
             ps.setString(1, ID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {

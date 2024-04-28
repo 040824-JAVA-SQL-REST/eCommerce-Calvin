@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.Revature.dtos.requests.NewDeleteItemRequest;
 import com.Revature.dtos.requests.NewItemRequest;
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.Item;
 import com.Revature.services.ItemService;
+import com.Revature.services.StoreService;
 import com.Revature.services.TokenService;
 
 import io.javalin.http.Context;
@@ -15,9 +17,12 @@ import io.javalin.http.Context;
 public class ItemController {
     private ItemService itemService;
     private final TokenService tokenService;
-    public ItemController(ItemService itemService, TokenService tokenService) {
+    private StoreService storeService;
+
+    public ItemController(ItemService itemService, TokenService tokenService, StoreService storeService) {  
         this.itemService = itemService;
         this.tokenService = tokenService;
+        this.storeService = storeService;
     }   
 
     public void addItem(Context ctx) {
@@ -43,7 +48,7 @@ public class ItemController {
 
             if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
                 ctx.status(403); // forbiddon
-                errors.put("error", principal.getRole().getName());
+                errors.put("error", "you do not have the authority to do this");
                 ctx.json(errors);
                 return;
             }
@@ -55,9 +60,15 @@ public class ItemController {
                 ctx.json(errors);
                 return;
             }
-            if (req.getStore_id().isEmpty()) {
+            if (req.getStoreName().isEmpty()) {
                 ctx.status(400);
                 errors.put("error", "Your item needs a store!");
+                ctx.json(errors);
+                return;
+            }
+            if (storeService.findStoreByName(req.getStoreName()) == null) {
+                ctx.status(400);
+                errors.put("error", "Store not found");
                 ctx.json(errors);
                 return;
             }
@@ -67,14 +78,56 @@ public class ItemController {
                 ctx.json(errors);
                 return;
             }
-            itemService.createItem(req.getName(), req.getValue(), req.getGrade(), req.getStore_id());
+            itemService.createItem(req.getName(), req.getValue(), req.getGrade(), req.getQuantity(), storeService.findStoreByName(req.getStoreName()).getStore_id());
         } catch(Exception e) {
             ctx.status(500);
+            System.out.println(e);
             e.printStackTrace();
         }
     }
     
-    public List<Item> getAllItems() {
-        return itemService.getAllItems();
+    public void getAllItems(Context ctx) {
+        Map<String,String> errors = new HashMap<>();
+        try {
+            String token = ctx.header("auth-token");
+            Principal principal = tokenService.parseToken(token);
+            if (!(principal.getRole().getName().equalsIgnoreCase("ADMIN") || principal.getRole().getName().equalsIgnoreCase("DEFAULT"))) {
+                ctx.status(403); // Forbidden
+                errors.put("error", "You are not logged in");
+                return;
+            }
+            List<Item> items = itemService.getAllItems();
+            ctx.json(items);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
+    }
+    public void delete(Context ctx) {
+        HashMap<String, String> errors = new HashMap<>();
+        try {
+            String token = ctx.header("auth-token");
+            NewDeleteItemRequest req = ctx.bodyAsClass(NewDeleteItemRequest.class);
+            Principal principal = tokenService.parseToken(token);
+            if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
+                ctx.status(403); // forbiddon
+                errors.put("error", "You are not an admin");
+                ctx.json(errors);
+                return;
+            }
+            Item deletedItem = itemService.delete(req.getID());
+            if (deletedItem == null) {
+                ctx.status(404);
+                errors.put("Error", "No item found");
+                ctx.json(errors);
+                return;
+            }
+            ctx.json(deletedItem);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
     }
 }

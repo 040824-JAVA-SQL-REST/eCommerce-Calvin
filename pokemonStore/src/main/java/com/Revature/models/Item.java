@@ -7,16 +7,18 @@ public class Item {
     private String name;
     private int value;
     private int grade;
+    private int quantity;
     private String store_id;
     public Item() {
 
     }
 
-    public Item(String name, int value, int grade, String store_id) {
+    public Item(String name, int value, int grade, int quantity, String store_id) {
         this.item_id = UUID.randomUUID().toString();
         this.name = name;
         this.value = value;
         this.grade = grade;
+        this.quantity = quantity;
         this.store_id = store_id;
     }
 
@@ -65,6 +67,14 @@ public class Item {
 
     public void setStore_id(String store_id) {
         this.store_id = store_id;
+    }
+
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
 }

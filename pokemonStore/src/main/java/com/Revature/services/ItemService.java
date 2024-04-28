@@ -20,8 +20,8 @@ public class ItemService {
     public List<Item> getAllItems() {
         return itemDAO.findAll();
     }
-    public Item createItem(String name, int value, int grade, String id) {
-        Item newItem = new Item(name,value,grade,id);
+    public Item createItem(String name, int value, int grade, int quantity, String id) {
+        Item newItem = new Item(name,value,grade,quantity,id);
         return itemDAO.save(newItem);
 
     }
@@ -29,5 +29,13 @@ public class ItemService {
         return itemDAO.findAll()
         .stream()
         .noneMatch(s -> s.getName().equalsIgnoreCase(name));
+    }
+
+    public Item delete(String ID) {
+        return itemDAO.delete(ID);
+    }
+
+    public Item getItemById(String id) {
+        return itemDAO.findByID(id);
     }
 }

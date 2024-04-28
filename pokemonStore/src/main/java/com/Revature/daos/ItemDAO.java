@@ -16,11 +16,13 @@ public class ItemDAO implements CrudDAO<Item>{
     @Override
     public Item save(Item obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO items (id, name, value, grade) VALUES (?, ?, ?, ?)")) {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO items (id, name, value, grade, quantity, store_id) VALUES (?, ?, ?, ?, ?, ?)")) {
             ps.setString(1, obj.getItem_id());
             ps.setString(2, obj.getName());
             ps.setInt(3, obj.getValue());
             ps.setInt(4, obj.getGrade());
+            ps.setInt(5, obj.getQuantity());
+            ps.setString(6,obj.getStore_id());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database");
@@ -49,21 +51,22 @@ public class ItemDAO implements CrudDAO<Item>{
 
     @Override
     public Item delete(String ID) {
-        Item deletedItem = null;
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM items WHERE id = ?")) {
             ps.setString(1, ID);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                deletedItem = new Item();
+                Item deletedItem = new Item();
                 deletedItem.setItem_id(ID);
+                return deletedItem;
+            } else {
+                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting item from the database");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }
-        return deletedItem;
     }
 
     @Override

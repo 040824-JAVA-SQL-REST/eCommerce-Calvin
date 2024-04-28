@@ -27,7 +27,7 @@ public class StoreService {
     }
 
     public Store findStoreByName(String name) {
-        return storeDAO.findByID(name);
+        return storeDAO.findByName(name);
     }
 
     public boolean isValid(String name) {

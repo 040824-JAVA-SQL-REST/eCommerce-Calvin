@@ -57,23 +57,22 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public User delete(String ID) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-         PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
-        ps.setString(1, ID);
-        int rowsAffected = ps.executeUpdate();
-        if (rowsAffected > 0) {
-            User user = new User();
-            user.setId(ID);
-            user.setUsername(ID);
-            return user;
-        } else {
-            return null;
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
+            ps.setString(1, ID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                User user = new User();
+                user.setId(ID);
+                user.setUsername(ID);
+                return user;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error executing SQL query", e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file", e);
         }
-        
-    } catch (SQLException e) {
-        throw new RuntimeException("Error executing SQL query", e);
-    } catch (IOException e) {
-        throw new RuntimeException("Cannot find application.properties file", e);
-    }
     }
 
     @Override
