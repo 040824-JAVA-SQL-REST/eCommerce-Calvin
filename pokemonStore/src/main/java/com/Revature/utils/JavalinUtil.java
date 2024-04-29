@@ -10,18 +10,21 @@ import java.io.IOException;
 
 import com.Revature.controllers.CartItemController;
 import com.Revature.controllers.ItemController;
+import com.Revature.controllers.OrderController;
 import com.Revature.controllers.OrderItemsController;
 import com.Revature.controllers.StoreController;
 import com.Revature.controllers.UserController;
 import com.Revature.daos.CartDAO;
 import com.Revature.daos.CartProductDAO;
 import com.Revature.daos.ItemDAO;
+import com.Revature.daos.OrderDAO;
 import com.Revature.daos.RoleDAO;
 import com.Revature.daos.StoreDAO;
 import com.Revature.daos.UserDAO;
 import com.Revature.services.CartItemService;
 import com.Revature.services.CartService;
 import com.Revature.services.ItemService;
+import com.Revature.services.OrderService;
 import com.Revature.services.RoleService;
 import com.Revature.services.StoreService;
 import com.Revature.services.TokenService;
@@ -54,6 +57,11 @@ public class JavalinUtil {
             new CartService(new CartDAO()), 
             new ItemService(new ItemDAO()), 
             new CartItemService(new CartProductDAO()));
+        OrderController orderController = new OrderController(new TokenService(),
+            new CartService(new CartDAO()), 
+            new ItemService(new ItemDAO()), 
+            new CartItemService(new CartProductDAO()),
+            new OrderService(new OrderDAO()));
         return Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/users", () -> {
@@ -81,6 +89,12 @@ public class JavalinUtil {
 
                 path("orderItems", () -> {
                     get(orderItemsController::getAllOrders);
+                });
+
+                path("orders", () -> {
+                    post(orderController::addOrder);
+                    get("/{id}", orderController::getOrderHistoryWithUserID);
+                    get(orderController::getAllOrderHistory);
                 });
             });
         });

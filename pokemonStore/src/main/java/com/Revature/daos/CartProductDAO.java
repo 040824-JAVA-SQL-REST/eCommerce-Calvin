@@ -21,7 +21,7 @@ public class CartProductDAO {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO cart_items (item_id, cart_id, quantity) VALUES (?, ?, ?)")) {
             ps.setString(1, obj.getItem_id());
-            ps.setString(2, obj.getStore_id());
+            ps.setString(2, obj.getCart_id());
             ps.setInt(3, obj.getQuantity());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -36,7 +36,7 @@ public class CartProductDAO {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement("UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND item_id = ?")) {
             ps.setInt(1, obj.getQuantity());
-            ps.setString(2, obj.getStore_id());
+            ps.setString(2, obj.getCart_id());
             ps.setString(3, obj.getItem_id());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -74,7 +74,27 @@ public class CartProductDAO {
             while(rs.next()) {
                 CartProduct cartProduct = new CartProduct();
                 cartProduct.setItem_id(rs.getString("item_id"));
-                cartProduct.setStore_id(rs.getString("store_id"));
+                cartProduct.setCart_id(rs.getString("cart_id"));
+                cartProduct.setQuantity(rs.getInt("quantity"));
+                cartProducts.add(cartProduct);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return cartProducts;
+    }
+    public List<CartProduct> findAllByCartID(String ID) {
+        List<CartProduct> cartProducts = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM cart_items WHERE cart_id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                CartProduct cartProduct = new CartProduct();
+                cartProduct.setItem_id(rs.getString("item_id"));
+                cartProduct.setCart_id(rs.getString("cart_id"));
                 cartProduct.setQuantity(rs.getInt("quantity"));
                 cartProducts.add(cartProduct);
             }

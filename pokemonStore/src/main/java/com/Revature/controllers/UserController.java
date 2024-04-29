@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.Revature.dtos.requests.NewDeleteUserRequest;
 import com.Revature.dtos.requests.NewLoginRequest;
-import com.Revature.dtos.requests.NewOrderRequest;
 import com.Revature.dtos.requests.NewRegisterRequest;
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.Cart;
@@ -107,6 +106,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
+
     public void getCart(Context ctx) {
         HashMap<String, String> errors = new HashMap<>();
         try {

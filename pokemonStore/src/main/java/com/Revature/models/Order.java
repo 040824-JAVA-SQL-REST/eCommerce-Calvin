@@ -1,21 +1,22 @@
 package com.Revature.models;
 
-import java.sql.Date;
 
 public class Order {
     String order_id;
-    String customer_id;
-    Date order_date;
+    String user_id;
+    String order_date;
     int cost;
+    String status;
 
     public Order() {
     }
 
-    public Order(String order_id, String customer_id, Date order_date, int cost) {
+    public Order(String order_id, String user_id, String order_date, int cost, String status) {
         this.order_id = order_id;
-        this.customer_id = customer_id;
+        this.user_id = user_id;
         this.order_date = order_date;
         this.cost = cost;
+        this.status = status;
     }
 
     public String getOrder_id() {
@@ -26,20 +27,16 @@ public class Order {
         this.order_id = order_id;
     }
 
-    public String getCustomer_id() {
-        return this.customer_id;
+    public String getUser_id() {
+        return this.user_id;
     }
 
-    public void setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
-    public Date getOrder_date() {
+    public String getOrder_date() {
         return this.order_date;
-    }
-
-    public void setOrder_date(Date order_date) {
-        this.order_date = order_date;
     }
 
     public int getCost() {
@@ -49,5 +46,16 @@ public class Order {
     public void setCost(int cost) {
         this.cost = cost;
     }
-    
+    public void setOrder_date(String order_date) {
+        this.order_date = order_date;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

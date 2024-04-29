@@ -1,5 +1,7 @@
 package com.Revature.services;
 
+import java.util.List;
+
 import com.Revature.daos.CartProductDAO;
 import com.Revature.models.CartProduct;
 import com.Revature.models.Item;
@@ -21,5 +23,8 @@ public class CartItemService {
 
     public Item delete(String cartId, String itemId) {
         return cartProductDao.delete(cartId, itemId);
+    }
+    public List<CartProduct> findAllByCartID(String cartID) {
+        return cartProductDao.findAllByCartID(cartID);
     }
 }

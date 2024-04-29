@@ -16,11 +16,11 @@ public class OrderDAO {
     // Method to insert a new order into the database
     public Order addOrder(Order order) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO orders (order_id, customer_id, order_date, cost) VALUES (?, ?, ?, ?)")) {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO orders (order_id, user_id, total_amount, status) VALUES (?, ?, ?, ?)")) {
             ps.setString(1, order.getOrder_id());
-            ps.setString(2, order.getCustomer_id());
-            ps.setDate(3, order.getOrder_date());
-            ps.setInt(4, order.getCost());
+            ps.setString(2, order.getUser_id());
+            ps.setInt(3, order.getCost());
+            ps.setString(4, "pending");
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);
@@ -38,9 +38,8 @@ public class OrderDAO {
         ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order order = new Order();
-                order.setCustomer_id(rs.getString("order_id"));
-                order.setOrder_id(rs.getString("customer_id"));
-                order.setOrder_date(rs.getDate("order_date"));
+                order.setUser_id(rs.getString("user_id"));
+                order.setOrder_id(rs.getString("order_id"));
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -50,7 +49,26 @@ public class OrderDAO {
         }
         return orders;
     }
-
+    public List<Order> getAllOrdersByUserID(String id) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM orders WHERE user_id = ?")) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setUser_id(rs.getString("user_id"));
+                order.setOrder_id(rs.getString("order_id"));
+                order.setCost(rs.getInt("total_amount"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return orders;
+    }
     // Method to retrieve an order by its ID
     public Order getOrderById(int orderId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
@@ -60,8 +78,7 @@ public class OrderDAO {
                 if (rs.next()) {
                     Order order = new Order();
                     order.setOrder_id(rs.getString("order_id"));
-                    order.setCustomer_id(rs.getString("customer_id"));
-                    order.setOrder_date(rs.getDate("order_date"));
+                    order.setUser_id(rs.getString("user_id"));
                     return order; // Return the Order object if found
                 }
             }
@@ -76,10 +93,9 @@ public class OrderDAO {
     // Method to update an existing order in the database
     public Order updateOrder(Order order) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE orders SET customer_id = ?, order_date = ? WHERE order_id = ?")) {
-            ps.setString(1, order.getCustomer_id());
-            ps.setDate(2, order.getOrder_date());
-            ps.setString(3, order.getOrder_id());
+        PreparedStatement ps = conn.prepareStatement("UPDATE orders SET customer_id = ? WHERE order_id = ?")) {
+            ps.setString(1, order.getUser_id());
+            ps.setString(2, order.getOrder_id());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);

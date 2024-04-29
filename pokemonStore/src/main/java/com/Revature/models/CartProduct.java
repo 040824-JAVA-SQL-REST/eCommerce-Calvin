@@ -2,15 +2,15 @@ package com.Revature.models;
 
 public class CartProduct {
     private String item_id;
-    private String store_id;
+    private String cart_id;
     private int quantity;
 
     public CartProduct() {
     }
 
-    public CartProduct(String item_id, String store_id, int quantity) {
+    public CartProduct(String item_id, String cart_id, int quantity) {
         this.item_id = item_id;
-        this.store_id = store_id;
+        this.cart_id = cart_id;
         this.quantity = quantity;
     }
 
@@ -22,12 +22,12 @@ public class CartProduct {
         this.item_id = item_id;
     }
 
-    public String getStore_id() {
-        return this.store_id;
+    public String getCart_id() {
+        return this.cart_id;
     }
 
-    public void setStore_id(String store_id) {
-        this.store_id = store_id;
+    public void setCart_id(String cart_id) {
+        this.cart_id = cart_id;
     }
     
 
