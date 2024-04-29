@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.Revature.dtos.requests.NewDeleteUserRequest;
 import com.Revature.dtos.requests.NewLoginRequest;
+import com.Revature.dtos.requests.NewOrderRequest;
 import com.Revature.dtos.requests.NewRegisterRequest;
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.Cart;
@@ -106,10 +107,32 @@ public class UserController {
             e.printStackTrace();
         }
     }
-    public void checkOut(Context ctx) {
-        HashMap<String,String> errors = new HashMap<>();
-        
+    public void getCart(Context ctx) {
+        HashMap<String, String> errors = new HashMap<>();
+        try {
+            String token = ctx.header("auth-token");
+            NewDeleteUserRequest req = ctx.bodyAsClass(NewDeleteUserRequest.class);
+            Principal principal = tokenService.parseToken(token);
+            if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
+                ctx.status(403); // forbiddon
+                errors.put("error", "You are not an admin");
+                ctx.json(errors);
+                return;
+            }
+            cartService.delete(req.getId());
+            User deletedUser = userService.delete(req.getId());
+            if (deletedUser == null) {
+                ctx.status(400);
+                errors.put("Error", "No user found");
+                ctx.json(errors);
+                return;
+            }
+            ctx.json(deletedUser);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
     }
-
 
 }

@@ -81,6 +81,8 @@ public class ItemDAO implements CrudDAO<Item>{
                 item.setName(rs.getString("name"));
                 item.setValue(rs.getInt("value"));
                 item.setGrade(rs.getInt("grade"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setStore_id(rs.getString("store_id"));
                 items.add(item);
             }
         } catch (SQLException e) {

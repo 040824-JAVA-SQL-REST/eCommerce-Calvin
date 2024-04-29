@@ -76,7 +76,7 @@ public class reviewDAO implements CrudDAO<Review> {
         List<Review> reviews = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM reviews");
-        ResultSet rs = ps.executeQuery();) {
+        ResultSet rs = ps.executeQuery()) {
             while(rs.next()) {
                 Review review = new Review();
                 review.setId(rs.getString("id"));

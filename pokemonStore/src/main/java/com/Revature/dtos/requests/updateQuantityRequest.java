@@ -1,18 +1,18 @@
 package com.Revature.dtos.requests;
 
-public class NewOrderRequest {
+public class updateQuantityRequest {
     private String cartId;
     private String itemId;
-    private int quantity;
+    private String addOrSubtract;
 
 
-    public NewOrderRequest() {
+    public updateQuantityRequest() {
     }
 
-    public NewOrderRequest(String cartId, String itemId, int quantity) {
+    public updateQuantityRequest(String cartId, String itemId, String addOrSubtract) {
         this.cartId = cartId;
         this.itemId = itemId;
-        this.quantity = quantity;
+        this.addOrSubtract = addOrSubtract;
     }
 
     public String getCartId() {
@@ -31,12 +31,12 @@ public class NewOrderRequest {
         this.itemId = itemId;
     }
 
-    public int getQuantity() {
-        return this.quantity;
+    public String getAddOrSubtract() {
+        return this.addOrSubtract;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAddOrSubtract(String addOrSubtract) {
+        this.addOrSubtract = addOrSubtract;
     }
 
 }

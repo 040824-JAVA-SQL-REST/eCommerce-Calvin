@@ -26,4 +26,10 @@ public class CartService {
     public Cart getCart(String userID) {
         return cartDAO.findByID(userID);
     }
+    public Cart findByID(String id) {
+        return cartDAO.findByID(id);
+    }
+    public Cart findByCartID(String id) {
+        return cartDAO.findByCartID(id);
+    }
 }

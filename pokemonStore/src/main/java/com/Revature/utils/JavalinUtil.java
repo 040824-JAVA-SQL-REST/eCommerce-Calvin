@@ -2,19 +2,24 @@ package com.Revature.utils;
 
 import static io.javalin.apibuilder.ApiBuilder.delete;
 import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.patch;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import java.io.IOException;
 
+import com.Revature.controllers.CartItemController;
 import com.Revature.controllers.ItemController;
+import com.Revature.controllers.OrderItemsController;
 import com.Revature.controllers.StoreController;
 import com.Revature.controllers.UserController;
 import com.Revature.daos.CartDAO;
+import com.Revature.daos.CartProductDAO;
 import com.Revature.daos.ItemDAO;
 import com.Revature.daos.RoleDAO;
 import com.Revature.daos.StoreDAO;
 import com.Revature.daos.UserDAO;
+import com.Revature.services.CartItemService;
 import com.Revature.services.CartService;
 import com.Revature.services.ItemService;
 import com.Revature.services.RoleService;
@@ -41,6 +46,14 @@ public class JavalinUtil {
             new ItemService(new ItemDAO()), 
             new TokenService(), 
             getStoreService());
+        CartItemController cartProductController = new CartItemController(new TokenService(), 
+            new CartService(new CartDAO()), 
+            new ItemService(new ItemDAO()), 
+            new CartItemService(new CartProductDAO()));
+        OrderItemsController orderItemsController = new OrderItemsController(new TokenService(), 
+            new CartService(new CartDAO()), 
+            new ItemService(new ItemDAO()), 
+            new CartItemService(new CartProductDAO()));
         return Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/users", () -> {
@@ -57,6 +70,17 @@ public class JavalinUtil {
                 path("/items", () -> {
                     post(itemController::addItem);
                     delete(itemController::delete);
+                    get(itemController::getAllItems);
+                });
+
+                path("/cartProducts", () -> {
+                    post(cartProductController::addItem);
+                    delete(cartProductController::delete);
+                    patch(cartProductController::updateQuantity);
+                });
+
+                path("orderItems", () -> {
+                    get(orderItemsController::getAllOrders);
                 });
             });
         });

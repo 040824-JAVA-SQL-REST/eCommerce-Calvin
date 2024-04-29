@@ -85,7 +85,6 @@ public class StoreController {
                 ctx.json(errors);
                 return;
             }
-            System.out.println(storeService.getAllStores().get(0).getName());
             ctx.json(storeService.getAllStores());
         } catch(Exception e) {
             ctx.status(500);
