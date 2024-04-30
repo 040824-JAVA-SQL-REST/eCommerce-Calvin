@@ -35,11 +35,13 @@ public class ItemDAO implements CrudDAO<Item>{
     @Override
     public Item update(Item obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE items SET name = ?, value = ?, grade = ? WHERE id = ?")) {
+            PreparedStatement ps = conn.prepareStatement("UPDATE items SET name = ?, value = ?, grade = ?, quantity = ?, store_id = ? WHERE id = ?")) {
             ps.setString(1, obj.getName());
             ps.setInt(2, obj.getValue());
             ps.setInt(3, obj.getGrade());
-            ps.setString(4, obj.getItem_id());
+            ps.setInt(4, obj.getQuantity());
+            ps.setString(5, obj.getStore_id());
+            ps.setString(6, obj.getItem_id());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error updating item in the database");

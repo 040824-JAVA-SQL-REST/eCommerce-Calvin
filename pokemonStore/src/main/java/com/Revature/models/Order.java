@@ -1,5 +1,7 @@
 package com.Revature.models;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     String order_id;
@@ -7,6 +9,7 @@ public class Order {
     String order_date;
     int cost;
     String status;
+    List<String> items = new ArrayList<>();
 
     public Order() {
     }
@@ -56,6 +59,14 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<String> getItems() {
+        return this.items;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
     }
 
 }

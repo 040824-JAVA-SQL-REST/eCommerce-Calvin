@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.Revature.dtos.requests.AddCartItemRequest;
+import com.Revature.dtos.requests.GetCartRequest;
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.CartProduct;
 import com.Revature.services.CartItemService;
@@ -166,6 +167,40 @@ public class CartItemController {
                 return;
             }
             cartItemService.delete(req.getCartId(), req.getItemId());
+        } catch (Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
+    }
+
+    public void getUserCart(Context ctx) {
+        Map<String,String> errors = new HashMap<>();
+        try {
+            String token = ctx.header("auth-token");
+            
+            // Authenticate user
+            Principal principal = tokenService.parseToken(token);
+            if (principal == null) {
+                ctx.status(401); // Unauthorized
+                errors.put("error", "null user");
+                ctx.json(errors);
+                return;
+            }
+
+            GetCartRequest req = ctx.bodyAsClass(GetCartRequest.class);
+            if (req.getCart_id() == null) {
+                ctx.status(400);
+                errors.put("error", "cart_id is null");
+                ctx.json(errors);
+                return;
+            }
+            if (req.getUser_id() == null) {
+                ctx.status(404); // not found
+                errors.put("error", "user_id is null");
+                ctx.json(errors);
+                return;
+            }
+            ctx.json(cartItemService.findAllByCartID(req.getCart_id()));
         } catch (Exception e) {
             ctx.status(500);
             e.printStackTrace();

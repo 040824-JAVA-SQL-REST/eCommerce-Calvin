@@ -38,4 +38,8 @@ public class ItemService {
     public Item getItemById(String id) {
         return itemDAO.findByID(id);
     }
+
+    public Item update(Item item) {
+        return itemDAO.update(item);
+    }
 }

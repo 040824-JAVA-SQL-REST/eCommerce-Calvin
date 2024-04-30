@@ -24,6 +24,9 @@ public class CartItemService {
     public Item delete(String cartId, String itemId) {
         return cartProductDao.delete(cartId, itemId);
     }
+    public Item delete(String cartId) {
+        return cartProductDao.delete(cartId);
+    }
     public List<CartProduct> findAllByCartID(String cartID) {
         return cartProductDao.findAllByCartID(cartID);
     }

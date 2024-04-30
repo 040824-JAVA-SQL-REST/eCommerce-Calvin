@@ -6,16 +6,13 @@ import java.util.Map;
 
 import com.Revature.dtos.requests.NewOrderRequest;
 import com.Revature.dtos.responses.Principal;
-import com.Revature.models.Cart;
 import com.Revature.models.CartProduct;
 import com.Revature.models.Order;
-import com.Revature.models.OrderItem;
 import com.Revature.services.CartItemService;
 import com.Revature.services.CartService;
 import com.Revature.services.ItemService;
 import com.Revature.services.OrderService;
 import com.Revature.services.TokenService;
-import java.time.LocalDateTime;
 
 import io.javalin.http.Context;
 
@@ -36,6 +33,7 @@ public class OrderController {
         this.cartItemService = cartItemService;
         this.orderService = orderService;
     }
+
     public void addOrder(Context ctx) {
         Map<String,String> errors = new HashMap<>();
         try {
@@ -48,23 +46,26 @@ public class OrderController {
                 ctx.json(errors);
                 return;
             }
-            List<CartProduct> cartProducts = cartItemService.findAllByCartID(cartService.findByID(req.getUserID()).getCart_id());
+            List<CartProduct> cartProducts = cartItemService.findAllByCartID(cartService.findByID(principal.getId()).getCart_id());
             if (cartProducts.size() == 0) {
                 ctx.status(200);
                 return;
             } else {
                 Order order = new Order();
-                order.setUser_id(req.getUserID());
+                order.setUser_id(principal.getId());
                 order.setOrder_id(req.getCartId());
                 order.setStatus("pending");
                 int totalCost = 0;
                 
                 for (int i = 0; i < cartProducts.size(); i++) {
                     int cost = cartProducts.get(i).getQuantity() * itemService.getItemById(cartProducts.get(i).getItem_id()).getValue();
+                    order.getItems().add(itemService.getItemById(cartProducts.get(i).getItem_id()).getName());
                     totalCost += cost;
                 }
                 order.setCost(totalCost);
                 orderService.save(order);
+                cartItemService.delete(req.getCartId());
+                cartService.delete(req.getCartId());
                 ctx.status(200);
                 ctx.json(order);
                 return;
@@ -74,6 +75,7 @@ public class OrderController {
             e.printStackTrace();
         }
     }
+
     public void getOrderHistoryWithUserID(Context ctx) {
         Map<String,String> errors = new HashMap<>();
         try {
@@ -86,7 +88,7 @@ public class OrderController {
                 ctx.json(errors);
                 return;
             }
-            List<Order> orders = orderService.getAllByUserID(req.getUserID());
+            List<Order> orders = orderService.getAllByUserID(principal.getId());
             ctx.status(200);
             ctx.json(orders);
             return;
@@ -95,6 +97,7 @@ public class OrderController {
         e.printStackTrace();
         }
     }
+
     public void getAllOrderHistory(Context ctx) {
         Map<String,String> errors = new HashMap<>();
         try {

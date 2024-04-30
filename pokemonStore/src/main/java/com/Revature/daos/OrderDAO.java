@@ -40,6 +40,7 @@ public class OrderDAO {
                 Order order = new Order();
                 order.setUser_id(rs.getString("user_id"));
                 order.setOrder_id(rs.getString("order_id"));
+                order.setCost(rs.getInt("total_amount"));
                 orders.add(order);
             }
         } catch (SQLException e) {

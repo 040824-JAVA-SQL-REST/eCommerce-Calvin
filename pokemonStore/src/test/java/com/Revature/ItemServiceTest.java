@@ -136,4 +136,21 @@ public class ItemServiceTest {
         // Assert
         assertEquals(item, result);
     }
+    @Test
+    public void testUpdateItem() {
+        // Arrange
+        Item item = new Item();
+        item.setItem_id("itemId");
+        item.setName("itemName");
+        item.setGrade(10);
+        item.setQuantity(1);
+        item.setValue(1);
+        when(itemDaoMock.update(item)).thenReturn(item);
+
+        // Act
+        Item updatedItem = itemService.update(item);
+
+        // Assert
+        assertEquals(item, updatedItem);
+    }
 }

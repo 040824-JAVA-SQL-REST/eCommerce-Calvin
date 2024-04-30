@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.Revature.dtos.requests.NewDeleteItemRequest;
 import com.Revature.dtos.requests.NewItemRequest;
+import com.Revature.dtos.requests.NewUpdateItemRequest;
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.Item;
 import com.Revature.services.ItemService;
@@ -104,6 +105,7 @@ public class ItemController {
             e.printStackTrace();
         }
     }
+
     public void delete(Context ctx) {
         HashMap<String, String> errors = new HashMap<>();
         try {
@@ -124,6 +126,41 @@ public class ItemController {
                 return;
             }
             ctx.json(deletedItem);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500);
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Context ctx) {
+        HashMap<String, String> errors = new HashMap<>();
+        try {
+            String token = ctx.header("auth-token");
+            NewUpdateItemRequest req = ctx.bodyAsClass(NewUpdateItemRequest.class);
+            Principal principal = tokenService.parseToken(token);
+            if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
+                ctx.status(403); // forbiddon
+                errors.put("error", "You are not an admin");
+                ctx.json(errors);
+                return;
+            }
+            Item item = new Item(); 
+            item.setItem_id(req.getId());
+            item.setGrade(req.getGrade());
+            item.setName(req.getName());
+            item.setQuantity(req.getQuantity());
+            item.setStore_id(req.getStore_id());
+            item.setValue(req.getValue());
+            
+            Item updatedItem = itemService.update(item);
+            if (updatedItem == null) {
+                ctx.status(404);
+                errors.put("Error", "No item found");
+                ctx.json(errors);
+                return;
+            }
+            ctx.json(updatedItem);
             ctx.status(200);
         } catch (Exception e) {
             ctx.status(500);

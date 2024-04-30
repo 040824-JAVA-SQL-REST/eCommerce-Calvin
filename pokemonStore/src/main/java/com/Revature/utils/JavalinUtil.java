@@ -79,12 +79,14 @@ public class JavalinUtil {
                     post(itemController::addItem);
                     delete(itemController::delete);
                     get(itemController::getAllItems);
+                    patch(itemController::update);
                 });
 
-                path("/cartProducts", () -> {
+                path("/cartItems", () -> {
                     post(cartProductController::addItem);
                     delete(cartProductController::delete);
                     patch(cartProductController::updateQuantity);
+                    get(cartProductController::getUserCart);
                 });
 
                 path("orderItems", () -> {

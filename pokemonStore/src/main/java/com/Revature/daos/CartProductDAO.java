@@ -65,6 +65,22 @@ public class CartProductDAO {
         }
         return null;
     }
+    public Item delete(String cart_id) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM cart_items WHERE cart_id = ?")) {
+            ps.setString(1, cart_id);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                Item deletedItem = new Item();
+                return deletedItem;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file");
+        }
+        return null;
+    }
 
     public List<CartProduct> findAll() {
         List<CartProduct> cartProducts = new ArrayList<>();
