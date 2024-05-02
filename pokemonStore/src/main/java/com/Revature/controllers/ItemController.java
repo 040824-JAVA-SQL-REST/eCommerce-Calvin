@@ -139,6 +139,12 @@ public class ItemController {
             String token = ctx.header("auth-token");
             NewUpdateItemRequest req = ctx.bodyAsClass(NewUpdateItemRequest.class);
             Principal principal = tokenService.parseToken(token);
+            if (principal == null) {
+                ctx.status(401); // Unauthorized
+                errors.put("error", "null user");
+                ctx.json(errors);
+                return;
+            }
             if (!principal.getRole().getName().equalsIgnoreCase("ADMIN")) {
                 ctx.status(403); // forbiddon
                 errors.put("error", "You are not an admin");
