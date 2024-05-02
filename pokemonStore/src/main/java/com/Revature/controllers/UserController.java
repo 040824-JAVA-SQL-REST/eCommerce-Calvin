@@ -43,12 +43,17 @@ public class UserController {
                 ctx.status(400);
                 errors.put("Error:", "Username is not valid");
                 return;
+            } if (!userService.validPassword(req.getPassword())) {
+                ctx.status(400);
+                errors.put("Error:", "Username is not valid");
+                return;
             }
             User newUser = new User(req);
             Cart newCart = new Cart(newUser.getId());
             newUser.setCartID(newCart.getCart_id());
             newUser = userService.save(newUser);
             newCart = cartService.save(newCart, newUser);            
+            ctx.json(errors);
             ctx.status(200);
         } catch (Exception e) {
             ctx.status(500);
