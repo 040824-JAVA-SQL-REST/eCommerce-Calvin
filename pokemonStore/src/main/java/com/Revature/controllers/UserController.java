@@ -34,18 +34,22 @@ public class UserController {
             if (!userService.isValidUsername(req.getUsername())) {
                 ctx.status(400);
                 errors.put("Error:", "Username is not valid");
+                ctx.json(errors);
                 return;
             } if (!userService.uniqueUsername(req.getUsername())) {
                 ctx.status(409);
                 errors.put("Error:", "Username is not unique");
+                ctx.json(errors);
                 return;
             } if (!userService.validPassword(req.getPassword())) {
                 ctx.status(400);
                 errors.put("Error:", "Username is not valid");
+                ctx.json(errors);
                 return;
             } if (!userService.validPassword(req.getPassword())) {
                 ctx.status(400);
                 errors.put("Error:", "Username is not valid");
+                ctx.json(errors);
                 return;
             }
             User newUser = new User(req);
@@ -68,6 +72,7 @@ public class UserController {
             if (existingUser.isEmpty()) {
                 ctx.status(400);
                 errors.put("Error:", "Invalid username or password");
+                ctx.json(errors);
                 return;
             }
             User foundUser = existingUser.get();
