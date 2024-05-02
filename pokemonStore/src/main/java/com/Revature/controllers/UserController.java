@@ -57,7 +57,7 @@ public class UserController {
             newUser.setCartID(newCart.getCart_id());
             newUser = userService.save(newUser);
             newCart = cartService.save(newCart, newUser);            
-            ctx.json(errors);
+            ctx.json(newUser);
             ctx.status(200);
         } catch (Exception e) {
             ctx.status(500);

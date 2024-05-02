@@ -42,7 +42,7 @@ public class OrderController {
             NewOrderRequest req = ctx.bodyAsClass(NewOrderRequest.class);
             if (!(principal.getRole().getName().equalsIgnoreCase("ADMIN") || principal.getRole().getName().equalsIgnoreCase("DEFUALT"))) {
                 ctx.status(403); // Forbidden
-                errors.put("error", "not logged in");
+                errors.put("error", "not logged in" + principal.getRole().getName());
                 ctx.json(errors);
                 return;
             }
@@ -59,6 +59,7 @@ public class OrderController {
                 
                 for (int i = 0; i < cartProducts.size(); i++) {
                     int cost = cartProducts.get(i).getQuantity() * itemService.getItemById(cartProducts.get(i).getItem_id()).getValue();
+                    System.out.println(order.getItems());
                     order.getItems().add(itemService.getItemById(cartProducts.get(i).getItem_id()).getName());
                     totalCost += cost;
                 }
