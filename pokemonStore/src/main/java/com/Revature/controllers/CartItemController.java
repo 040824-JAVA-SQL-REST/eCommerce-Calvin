@@ -31,7 +31,12 @@ public class CartItemController {
         Map<String,String> errors = new HashMap<>();
         try {
             String token = ctx.header("auth-token");
-            
+            if (token == null) {
+                ctx.status(401); // Unauthorized
+                errors.put("error", "not logged in");
+                ctx.json(errors);
+                return;
+            }
             // Authenticate user
             Principal principal = tokenService.parseToken(token);
             if (principal == null) {
