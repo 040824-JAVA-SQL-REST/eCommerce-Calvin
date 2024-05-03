@@ -162,7 +162,6 @@ public class CartItemController {
                 ctx.status(404);
                 errors.put("error", "no cart with that id");
                 ctx.json(errors);
-
                 return;
             }
             cartItemService.delete(req.getCartId(), req.getItemId());

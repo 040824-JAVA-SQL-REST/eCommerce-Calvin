@@ -43,12 +43,7 @@ public class UserController {
                 return;
             } if (!userService.validPassword(req.getPassword())) {
                 ctx.status(400);
-                errors.put("Error:", "Username is not valid");
-                ctx.json(errors);
-                return;
-            } if (!userService.validPassword(req.getPassword())) {
-                ctx.status(400);
-                errors.put("Error:", "Username is not valid");
+                errors.put("Error:", "Password is not valid");
                 ctx.json(errors);
                 return;
             }
