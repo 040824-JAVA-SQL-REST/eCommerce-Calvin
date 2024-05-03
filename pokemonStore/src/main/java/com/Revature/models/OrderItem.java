@@ -50,5 +50,7 @@ public class OrderItem {
     public void setCost(int cost) {
         this.cost = cost;
     }
-    
+    public String toString() {
+        return (this.item_id);
+    }
 }

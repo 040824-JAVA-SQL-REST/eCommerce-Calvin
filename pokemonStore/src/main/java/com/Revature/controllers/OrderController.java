@@ -80,10 +80,11 @@ public class OrderController {
                     orderItem.setItem_id(cartProducts.get(i).getItem_id());
                     orderItem.setQuantity(cartProducts.get(i).getQuantity());
                     orderItem.setOrder_id(order.getOrder_id());
+                    System.out.println(orderItem);
                     oi.add(orderItem);
                     totalCost += cost;
                 }
-
+                System.out.println(cartProducts.size());
                 OrderResponse oResponse = new OrderResponse();
                 oResponse.setCost(totalCost);
                 oResponse.setStatus("pending");
@@ -91,6 +92,8 @@ public class OrderController {
                 order.setCost(totalCost);
                 orderService.save(order);
                 for (int i = 0; i < oi.size(); i++ ) {
+                    System.out.println(oi.size());
+                    System.out.println(oi);
                     orderItemService.save(oi.get(i));
                 } 
                 cartItemService.delete(req.getCartId());
@@ -135,19 +138,6 @@ public class OrderController {
                 or.setOrder_date(orders.get(i).getOrder_date());
                 ors.add(or);
             }
-            // json list of orderResponse
-            //  order_id
-            //  [[itemid, quantity, cost, status]] <- order item
-            //  total cost
-            //  status
-            // store it
-            // after found everything
-            // json it up
-            // find the orders with userid
-            // get the cost of orders
-            // get everything total, status, order date, 
-            // set everything
-            //  
             ctx.status(200);
             ctx.json(ors);
             return;

@@ -38,6 +38,8 @@ public class CartProduct {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
+    public String toString() {
+        return this.item_id;
+    }
 
 }
