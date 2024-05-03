@@ -8,6 +8,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import java.io.IOException;
 
+import com.Revature.controllers.CartController;
 import com.Revature.controllers.CartItemController;
 import com.Revature.controllers.ItemController;
 import com.Revature.controllers.OrderController;
@@ -18,12 +19,14 @@ import com.Revature.daos.CartDAO;
 import com.Revature.daos.CartProductDAO;
 import com.Revature.daos.ItemDAO;
 import com.Revature.daos.OrderDAO;
+import com.Revature.daos.OrderItemDAO;
 import com.Revature.daos.RoleDAO;
 import com.Revature.daos.StoreDAO;
 import com.Revature.daos.UserDAO;
 import com.Revature.services.CartItemService;
 import com.Revature.services.CartService;
 import com.Revature.services.ItemService;
+import com.Revature.services.OrderItemService;
 import com.Revature.services.OrderService;
 import com.Revature.services.RoleService;
 import com.Revature.services.StoreService;
@@ -54,14 +57,16 @@ public class JavalinUtil {
             new ItemService(new ItemDAO()), 
             new CartItemService(new CartProductDAO()));
         OrderItemsController orderItemsController = new OrderItemsController(new TokenService(), 
-            new CartService(new CartDAO()), 
-            new ItemService(new ItemDAO()), 
-            new CartItemService(new CartProductDAO()));
+            new OrderItemService(new OrderItemDAO()), 
+            new ItemService(new ItemDAO()));
         OrderController orderController = new OrderController(new TokenService(),
             new CartService(new CartDAO()), 
             new ItemService(new ItemDAO()), 
             new CartItemService(new CartProductDAO()),
-            new OrderService(new OrderDAO()));
+            new OrderService(new OrderDAO()),
+            new OrderItemService(new OrderItemDAO()));
+        CartController cartController = new CartController(new CartService(new CartDAO()),
+            new TokenService());
         return Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/users", () -> {
@@ -69,7 +74,9 @@ public class JavalinUtil {
                     post("/login", userController::login);
                     delete(userController::delete);
                 });
-
+                path("/carts", () -> {
+                    get(cartController::getCartByUserID);
+                });
                 path("/stores", () -> {
                     post(storeController::addStore);
                     get(storeController::getAllStores);

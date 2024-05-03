@@ -27,7 +27,7 @@ public class CartProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file"+ e);
         }
         return obj;
     }
@@ -42,7 +42,7 @@ public class CartProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e) ;
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file"+ e);
         }
         return obj;
     }
@@ -59,9 +59,9 @@ public class CartProductDAO {
                 return deletedItem;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database"+ e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file"+ e);
         }
         return null;
     }
@@ -72,12 +72,13 @@ public class CartProductDAO {
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 Item deletedItem = new Item();
+                System.out.println(rowsAffected);
                 return deletedItem;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file" + e);
         }
         return null;
     }
@@ -97,7 +98,7 @@ public class CartProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file" + e);
         }
         return cartProducts;
     }
@@ -117,7 +118,7 @@ public class CartProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file" + e);
         }
         return cartProducts;
     }

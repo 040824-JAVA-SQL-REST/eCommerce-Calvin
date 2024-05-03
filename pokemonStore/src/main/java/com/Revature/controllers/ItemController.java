@@ -78,8 +78,9 @@ public class ItemController {
                 errors.put("error", "item already exists or item name already taken");
                 ctx.json(errors);
                 return;
-            }
+            }  
             itemService.createItem(req.getName(), req.getValue(), req.getGrade(), req.getQuantity(), storeService.findStoreByName(req.getStoreName()).getStore_id());
+            ctx.status(201);
         } catch(Exception e) {
             ctx.status(500);
             System.out.println(e);

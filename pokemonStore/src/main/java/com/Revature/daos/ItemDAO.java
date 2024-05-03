@@ -103,8 +103,8 @@ public class ItemDAO implements CrudDAO<Item>{
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Item item = new Item();
-                item.setItem_id("id");
-                item.setName("name");
+                item.setItem_id(rs.getString("id"));
+                item.setName(rs.getString("name"));
                 item.setValue(rs.getInt("value"));
                 item.setGrade(rs.getInt("grade"));
                 return item;

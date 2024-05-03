@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.Revature.models.CartProduct;
 import com.Revature.models.Item;
+import com.Revature.models.Order;
 import com.Revature.models.OrderItem;
 import com.Revature.utils.ConnectionFactory;
 
@@ -16,10 +18,11 @@ public class OrderItemDAO {
 
     public OrderItem save(OrderItem obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO order_items (item_id, order_id, quantity) VALUES (?, ?, ?)")) {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO order_items (item_id, order_id, quantity, cost) VALUES (?, ?, ?, ?)")) {
             ps.setString(1, obj.getItem_id());
             ps.setString(2, obj.getOrder_id());
             ps.setInt(3, obj.getQuantity());
+            ps.setInt(4, obj.getCost());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot connect to the database" + e);
@@ -56,8 +59,9 @@ public class OrderItemDAO {
             while(rs.next()) {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setItem_id(rs.getString("item_id"));
-                orderItem.setOrderId(rs.getString("order_id"));
+                orderItem.setOrder_id(rs.getString("order_id"));
                 orderItem.setQuantity(rs.getInt("quantity"));
+                orderItem.setCost(rs.getInt("cost"));
                 orderItems.add(orderItem);
             }
         } catch (SQLException e) {
@@ -80,6 +84,27 @@ public class OrderItemDAO {
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties file");
         }
-        return obj;
+       return obj;
+    }
+    public List<OrderItem> findAllByOrderID(String ID) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM order_items WHERE order_id = ?")) {
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setItem_id(rs.getString("item_id"));
+                orderItem.setOrder_id(rs.getString("order_id"));
+                orderItem.setQuantity(rs.getInt("quantity"));
+                orderItem.setCost(rs.getInt("cost"));
+                orderItems.add(orderItem);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to the database" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties file" + e);
+        }
+        return orderItems;
     }
 }

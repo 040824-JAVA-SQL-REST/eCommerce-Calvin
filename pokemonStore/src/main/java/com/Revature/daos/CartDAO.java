@@ -90,18 +90,17 @@ public class CartDAO implements CrudDAO<Cart>{
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM carts WHERE user_id = ?")) {
             ps.setString(1, ID);
             ResultSet rs = ps.executeQuery();
+            Cart cart = new Cart();
             while(rs.next()) {
-                Cart cart = new Cart();
                 cart.setCart_id(rs.getString("id"));
                 cart.setBelongsTo(rs.getString("user_id"));
-                return cart;
             }
+            return cart;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to the database");
+            throw new RuntimeException("Cannot connect to the database"+ e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties file");
+            throw new RuntimeException("Cannot find application.properties file"+ e);
         }
-        return null;
     }
 
     public Cart findByCartID(String ID) {

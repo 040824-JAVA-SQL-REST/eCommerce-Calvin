@@ -27,5 +27,7 @@ public class OrderItemService {
     public List<OrderItem> getAll() {
         return orderItemDAO.findAll();
     }
-    
+    public List<OrderItem> getAllByOrderID(String ID) {
+        return orderItemDAO.findAllByOrderID(ID);
+    }
 }

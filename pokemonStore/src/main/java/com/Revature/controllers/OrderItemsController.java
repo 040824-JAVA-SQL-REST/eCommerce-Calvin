@@ -6,8 +6,6 @@ import java.util.Map;
 
 import com.Revature.dtos.responses.Principal;
 import com.Revature.models.OrderItem;
-import com.Revature.services.CartItemService;
-import com.Revature.services.CartService;
 import com.Revature.services.ItemService;
 import com.Revature.services.OrderItemService;
 import com.Revature.services.TokenService;
@@ -18,9 +16,14 @@ public class OrderItemsController {
     private final TokenService tokenService;
     private OrderItemService orderItemService;
 
-    public OrderItemsController(TokenService tokenService, CartService cartService, ItemService itemService, CartItemService cartItemService) {
+    public OrderItemsController(
+        TokenService tokenService, 
+        OrderItemService orderItemService, 
+        ItemService itemService) {
         this.tokenService = tokenService;
+        this.orderItemService = orderItemService;
     }
+
     public void getAllOrders(Context ctx) {
         Map<String,String> errors = new HashMap<>();
         try {

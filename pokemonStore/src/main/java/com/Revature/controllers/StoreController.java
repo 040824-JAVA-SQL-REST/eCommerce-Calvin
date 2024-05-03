@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.Revature.dtos.requests.NewStoreRequest;
 import com.Revature.dtos.responses.Principal;
+import com.Revature.models.Store;
 import com.Revature.services.StoreService;
 import com.Revature.services.TokenService;
 
@@ -59,7 +60,9 @@ public class StoreController {
                 ctx.json(errors);
                 return;
             }
-            storeService.createStore(req.getName());
+            Store store = storeService.createStore(req.getName());
+            ctx.json(store);
+            ctx.status(201);
         } catch(Exception e) {
             ctx.status(500);
             e.printStackTrace();

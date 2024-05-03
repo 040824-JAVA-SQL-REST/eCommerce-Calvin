@@ -1,26 +1,26 @@
 package com.Revature.models;
 
+import java.util.UUID;
+
 public class OrderItem {
-    private String order_id;
+    private String orderItemid;
     private String item_id;
     private int quantity;
+    private int cost;
 
     public OrderItem() {
 
     }
 
-    public OrderItem(String order_id, String item_id, int quantity) {
-        this.order_id = order_id;
+    public OrderItem(String item_id, int quantity, int cost) {
+        this.orderItemid = UUID.randomUUID().toString();
         this.item_id = item_id;
         this.quantity = quantity;
+        this.cost = cost;
     }
 
     public String getOrder_id() {
-        return this.order_id;
-    }
-
-    public void setOrderId(String order_id) {
-        this.order_id = order_id;
+        return this.orderItemid;
     }
 
     public String getItem_id() {
@@ -39,4 +39,16 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    public void setOrder_id(String order_id) {
+        this.orderItemid = order_id;
+    }
+
+    public int getCost() {
+        return this.cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+    
 }
