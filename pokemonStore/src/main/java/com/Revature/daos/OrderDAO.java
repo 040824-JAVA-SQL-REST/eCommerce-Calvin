@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Revature.models.CartProduct;
 import com.Revature.models.Order;
 import com.Revature.utils.ConnectionFactory;
 
